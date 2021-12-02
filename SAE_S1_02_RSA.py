@@ -1,9 +1,11 @@
 ### RAS ###
-import  math
+import math
 
 # Q. 1.1
 
 # Renvoie un tableau de tous les nombres premiers entre 0 et n
+
+
 def list_prim(n):
     result = []
     if n <= 1:
@@ -14,11 +16,14 @@ def list_prim(n):
     return result
 
 # Renvoie si nombre n est enier ou pas
+
+
 def is_prim(n):
     for i in range(2, int(math.sqrt(n)) + 1):
         if n % i == 0:
             return False
     return True
+
 
 """ def primmaisvrmrapide(n):
     out = list()
