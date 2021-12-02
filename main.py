@@ -25,3 +25,4 @@ def is_prime(n):
     return True
 
 # Q. 1.2
+print("test")
