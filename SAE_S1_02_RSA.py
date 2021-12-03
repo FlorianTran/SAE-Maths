@@ -19,6 +19,7 @@ def list_prim(n):
             result.append(num)
     return result
 
+
 def is_prim(n):
     """
     Renvoie si nombre n est enier ou pas
@@ -32,7 +33,8 @@ def is_prim(n):
 
 # ===== Q 1.2 ====== #
 
-def extended_gcd(a, b) :
+
+def extended_gcd(a, b):
     """ 
     Algorithme d'Euclide
         Prend en entrée 2 entiers:
@@ -46,7 +48,7 @@ def extended_gcd(a, b) :
     v0 = 0
     v1 = 1
     q = a//b
-    r = a%b 
+    r = a % b
     while r != 0:
         u2 = u0-q*u1
         v2 = v0-q*v1
@@ -57,8 +59,9 @@ def extended_gcd(a, b) :
         a = b
         b = r
         q = a//b
-        r = a%b 
+        r = a % b
     return b, u1, v1
+
 
 def pgcd(a, b):
     """
@@ -77,7 +80,8 @@ def pgcd(a, b):
 
 # ===== Q 1.3 ====== #
 
-def key_creation() :
+
+def key_creation():
     """
     Key_creation 
         créer une clé public, n une partie de clé publique et une clé privé
@@ -90,8 +94,10 @@ def key_creation() :
 
     # tous premier x > phiN valide pgcd(x, phiN) = 1
     pub = tabPrim[random.randrange(len(tabPrim))]
-    while pgcd(pub,phiN) != 1:
+    while pgcd(pub, phiN) != 1:
         pub = tabPrim[random.randrange(len(tabPrim))]
-    _,priv,_ = extended_gcd(pub, phiN)
-    
+    _, priv, _ = extended_gcd(pub, phiN)
+
     return n, pub, priv
+
+# pour crypter on utilise la table ascii sur notre texte et après on le decoupe en bloque de 4 dans un tableau, ca evite les attaques fréquentielles.
