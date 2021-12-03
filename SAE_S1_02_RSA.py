@@ -57,8 +57,9 @@ def extended_gcd(a, b) :
         a = b
         b = r
         q = a//b
-        r = a%b 
-    return b, u1, v1
+        r = a%b
+        d = b
+    return d, u1, v1
 
 def pgcd(a, b):
     """
