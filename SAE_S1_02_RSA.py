@@ -35,7 +35,7 @@ def is_prim(n):
 
 
 def extended_gcd(a, b):
-    """ 
+    """
     Algorithme d'Euclide
         Prend en entrée 2 entiers:
             a et b
@@ -60,9 +60,7 @@ def extended_gcd(a, b):
         b = r
         q = a//b
         r = a % b
-        d = b
-    return d, u1, v1
-
+    return b, u1, v1
 
 
 def pgcd(a, b):
@@ -71,7 +69,7 @@ def pgcd(a, b):
         prend en entrée 2 entiers:
             a et b
         retourne 2 entiers b et r
-        b le plus grand diviseur commun 
+        b le plus grand diviseur commun
         r le reste
     """
     r = a % b
@@ -85,7 +83,7 @@ def pgcd(a, b):
 
 def key_creation():
     """
-    Key_creation 
+    Key_creation
         créer une clé public, n une partie de clé publique et une clé privé
     """
     tabPrim = list_prim(1000)
@@ -103,3 +101,22 @@ def key_creation():
     return n, pub, priv
 
 # pour crypter on utilise la table ascii sur notre texte et après on le decoupe en bloque de 4 dans un tableau, ca evite les attaques fréquentielles.
+
+
+# ===== Q 1.4 ===== #
+
+
+def convert_msg(msg):
+    converted_msg = ""
+    converted_msg_tab = []
+    for character in msg:
+        tmp = str(ord(character))
+        tmp = tmp.zfill(3)
+        converted_msg += tmp
+
+    for i in range(4, len(converted_msg), 4):
+        converted_msg_tab.append(converted_msg[(i-4): i])
+    x2 = len(converted_msg)//4
+    converted_msg_tab.append(converted_msg[(x2*4): len(converted_msg)])
+
+    return converted_msg_tab
