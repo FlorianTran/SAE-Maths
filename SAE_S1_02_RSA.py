@@ -100,32 +100,39 @@ def key_creation():
 
     return n, pub, priv
 
-# pour crypter on utilise la table ascii sur notre texte et après on le decoupe en bloque de 4 dans un tableau, ca evite les attaques fréquentielles.
-
 
 # ===== Q 1.4 ===== #
 
 
 def convert_msg(msg):
     """
+    Prend en entrée un message textuel
+    Il est convertit grace à la table ascii, chaque charractère est convertit en un nombre à trois chiffre
+    renvoie une lite de nombre, groupé 4 à 4 pour évité les attaques fréquentielles et pour ne pas avoir besoin d'un n trop grand
     """
     converted_msg = ""
     converted_msg_tab = []
+    t = 4
+
     for character in msg:
         tmp = str(ord(character))
         tmp = tmp.zfill(3)
         converted_msg += tmp
 
-    for i in range(4, len(converted_msg), 4):
-        converted_msg_tab.append(converted_msg[(i-4): i])
-    x2 = len(converted_msg)//4
-    converted_msg_tab.append(converted_msg[(x2*4): len(converted_msg)])
+    for i in range(t, len(converted_msg), t):
+        converted_msg_tab.append(converted_msg[(i-t): i])
+    if len(converted_msg) % t != 0:
+        converted_msg_tab.append(
+            converted_msg[((len(converted_msg)//t)*t): len(converted_msg)])
 
     return converted_msg_tab
 
 
 def encryption_msg(n, pub, msg):
     pass
+
+
+# ===== Q 1.5 ===== #
 
 
 def decryption_msg(n, priv, msg):
