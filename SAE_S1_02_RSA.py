@@ -166,7 +166,7 @@ def decryption_msg(n, priv, msg):
         tmp = tmp.zfill(4)
         decrypted_msg.append(tmp)
 
-    return reconvert_msg(decrypted_msg)
+    return decrypted_msg
 
 
 def reconvert_msg(decrypted_msg_ascii):
@@ -174,7 +174,7 @@ def reconvert_msg(decrypted_msg_ascii):
     decrypted_msg = ""
 
     piv1, piv2 = 0, 3
-    while piv2 < len(decrypted_msg_ascii):
+    while piv2 <= len(decrypted_msg_ascii):
 
         decrypted_msg = decrypted_msg + \
             chr(int(decrypted_msg_ascii[piv1:piv2]))
