@@ -4,7 +4,6 @@ import random
 
 # ===== Q 1.1 ====== #
 
-
 def list_prim(n):
     """
     Renvoie un tableau de tous les nombres premiers entre 0 et n
@@ -32,7 +31,6 @@ def is_prim(n):
     return True
 
 # ===== Q 1.2 ====== #
-
 
 def extended_gcd(a, b):
     """
@@ -77,9 +75,7 @@ def pgcd(a, b):
         return b
     return pgcd(b, r)
 
-
 # ===== Q 1.3 ====== #
-
 
 def key_creation():
     """
@@ -100,40 +96,74 @@ def key_creation():
 
     return n, pub, priv
 
-
 # ===== Q 1.4 ===== #
-
 
 def convert_msg(msg):
     """
     Prend en entrée un message textuel
-    Il est convertit grace à la table ascii, chaque charractère est convertit en un nombre à trois chiffre
-    renvoie une lite de nombre, groupé 4 à 4 pour évité les attaques fréquentielles et pour ne pas avoir besoin d'un n trop grand
+    Il est convertit grace à la table ascii, chaque charractère est convertit en 
+    un nombre à trois chiffre renvoie une lite de nombre, groupé 4 à 4 pour évité 
+    les attaques fréquentielles et pour ne pas avoir besoin d'un n trop grand
     """
     converted_msg = ""
     converted_msg_tab = []
-    t = 4
 
     for character in msg:
         tmp = str(ord(character))
         tmp = tmp.zfill(3)
         converted_msg += tmp
 
-    for i in range(t, len(converted_msg), t):
-        converted_msg_tab.append(converted_msg[(i-t): i])
-    if len(converted_msg) % t != 0:
-        converted_msg_tab.append(
-            converted_msg[((len(converted_msg)//t)*t): len(converted_msg)])
-
+    for i in range(4,len(converted_msg)+1,4):
+       converted_msg_tab.append(converted_msg[i-4: i])
+       x=i
+    if len(converted_msg) % 4 != 0:
+        converted_msg_tab.append(converted_msg[x:])
+        
+    strToInt(converted_msg_tab)
     return converted_msg_tab
 
+def strToInt(tab):
+    for i in range(0,len(tab),1):
+        tab[i] = int(tab[i])
+    return tab 
 
 def encryption_msg(n, pub, msg):
-    pass
-
+    """
+    encryption_msg:
+        prend en entrée 2 entier (n et pub qui sont la clef publique) 
+        et 1 liste d'entier (msg qui contient le message converti en ASCII)
+    retourne le message crypté(crypted_msg)
+    """
+    crypted_msg = []
+    for i in range(0, len(msg),1):
+        crypted_msg.append(msg[i]**pub % n)
+    return crypted_msg
 
 # ===== Q 1.5 ===== #
 
-
 def decryption_msg(n, priv, msg):
-    pass
+    """
+    decryption_msg:
+        prend en entrée 2 entier ( n et priv qui sont la clé privée)
+        et une liste d'entier (msg qui contient le message crypté)
+    retourne le message décrypté en ASCII(decrypted_msg2)
+    """
+    decrypted_msg = []
+    decrypted_msg2 = []
+    
+    if priv < 0:
+        priv = -priv
+        for i in range(0, len(msg),1):
+            tmp = msg[i]**priv % n
+            _,tmp2,_ = extended_gcd(tmp,n)
+            decrypted_msg.append(tmp2)
+    else:
+        for i in range(0, len(msg),1):
+            decrypted_msg.append(msg[i]**priv % n)
+    
+    
+    for i in range(0,len(decrypted_msg),1):
+        tmp = str(decrypted_msg[i])
+        tmp = tmp.zfill(4)
+        decrypted_msg2.append(tmp)
+    return decrypted_msg2
