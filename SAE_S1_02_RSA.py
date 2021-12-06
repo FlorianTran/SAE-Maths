@@ -107,6 +107,8 @@ def key_creation():
 
 
 def convert_msg(msg):
+    """
+    """
     converted_msg = ""
     converted_msg_tab = []
     for character in msg:
@@ -122,4 +124,9 @@ def convert_msg(msg):
     return converted_msg_tab
 
 
-def encryption_msg(msg):
+def encryption_msg(n, pub, msg):
+    pass
+
+
+def decryption_msg(n, priv, msg):
+    pass
