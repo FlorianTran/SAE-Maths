@@ -125,7 +125,7 @@ def convert_msg(msg):
         converted_msg_tab.append(
             converted_msg[((len(converted_msg)//t)*t): len(converted_msg)])
 
-    return converted_msg_tab
+    return converted_msg_tab, converted_msg
 
 
 def encryption_msg(n, pub, msg):
