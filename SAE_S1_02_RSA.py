@@ -182,3 +182,6 @@ def reconvert_msg(decrypted_msg_ascii):
     return decrypted_msg
 
 # pb avec had qui renvois un nul en plus en gros c'est a cause de ascii ou 000 est NUl un caractère de controle donc jsp
+""" 
+n,pub,priv=key_creation()
+msg = reconvert_msg(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("")))) """
