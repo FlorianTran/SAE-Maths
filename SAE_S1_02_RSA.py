@@ -4,6 +4,7 @@ import random
 
 # ===== Q 1.1 ====== #
 
+
 def list_prim(n):
     """
     Renvoie un tableau de tous les nombres premiers entre 0 et n
@@ -31,6 +32,7 @@ def is_prim(n):
     return True
 
 # ===== Q 1.2 ====== #
+
 
 def extended_gcd(a, b):
     """
@@ -77,6 +79,7 @@ def pgcd(a, b):
 
 # ===== Q 1.3 ====== #
 
+
 def key_creation():
     """
     Key_creation
@@ -98,6 +101,7 @@ def key_creation():
 
 # ===== Q 1.4 ===== #
 
+
 def convert_msg(msg):
     """
     Prend en entrée un message textuel
@@ -113,19 +117,16 @@ def convert_msg(msg):
         tmp = tmp.zfill(3)
         converted_msg += tmp
 
-    for i in range(4,len(converted_msg)+1,4):
-       converted_msg_tab.append(converted_msg[i-4: i])
-       x=i
+    for i in range(4, len(converted_msg)+1, 4):
+        converted_msg_tab.append(converted_msg[i-4: i])
+        x = i
     if len(converted_msg) % 4 != 0:
         converted_msg_tab.append(converted_msg[x:])
-        
-    strToInt(converted_msg_tab)
+
+    for i in range(0, len(converted_msg_tab), 1):
+        converted_msg_tab[i] = int(converted_msg_tab[i])
     return converted_msg_tab
 
-def strToInt(tab):
-    for i in range(0,len(tab),1):
-        tab[i] = int(tab[i])
-    return tab 
 
 def encryption_msg(n, pub, msg):
     """
@@ -135,11 +136,12 @@ def encryption_msg(n, pub, msg):
     retourne le message crypté(crypted_msg)
     """
     crypted_msg = []
-    for i in range(0, len(msg),1):
+    for i in range(0, len(msg), 1):
         crypted_msg.append(msg[i]**pub % n)
     return crypted_msg
 
 # ===== Q 1.5 ===== #
+
 
 def decryption_msg(n, priv, msg):
     """
@@ -150,20 +152,38 @@ def decryption_msg(n, priv, msg):
     """
     decrypted_msg = []
     decrypted_msg2 = []
-    
+
     if priv < 0:
         priv = -priv
-        for i in range(0, len(msg),1):
+        for i in range(0, len(msg), 1):
             tmp = msg[i]**priv % n
-            _,tmp2,_ = extended_gcd(tmp,n)
+            _, tmp2, _ = extended_gcd(tmp, n)
             decrypted_msg.append(tmp2)
     else:
-        for i in range(0, len(msg),1):
+        for i in range(0, len(msg), 1):
             decrypted_msg.append(msg[i]**priv % n)
-    
-    
-    for i in range(0,len(decrypted_msg),1):
+
+    for i in range(0, len(decrypted_msg), 1):
         tmp = str(decrypted_msg[i])
         tmp = tmp.zfill(4)
         decrypted_msg2.append(tmp)
     return decrypted_msg2
+
+
+def reconvert_msg(decrypted_msg):
+    msg = ""
+    msgtab = []
+    msgfinal = ""
+
+    for i in range(0, len(decrypted_msg), 1):
+        msg = msg + decrypted_msg[i]
+
+    for i in range(0, len(msg), 3):
+        msgtab.append(msg[i:i+3])
+
+    for i in range(0, len(msgtab), 1):
+        msgfinal = msgfinal + chr(int(msgtab[i]))
+
+    return msgfinal
+
+    # pb avec alan nu et les 0 en gros on peut pas fill(4) pour decryption
