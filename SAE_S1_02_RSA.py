@@ -34,6 +34,21 @@ def is_prim(n):
 # ===== Q 1.2 ====== #
 
 
+def pgcd(a, b):
+    """
+    Pgcd
+        prend en entrée 2 entiers:
+            a et b
+        retourne 2 entiers b et r
+        b le plus grand diviseur commun
+        r le reste
+    """
+    r = a % b
+    if r == 0:
+        return b
+    return pgcd(b, r)
+
+
 def extended_gcd(a, b):
     """
     Algorithme d'Euclide
@@ -63,20 +78,6 @@ def extended_gcd(a, b):
     return b, u1, v1
 
 
-def pgcd(a, b):
-    """
-    Pgcd
-        prend en entrée 2 entiers:
-            a et b
-        retourne 2 entiers b et r
-        b le plus grand diviseur commun
-        r le reste
-    """
-    r = a % b
-    if r == 0:
-        return b
-    return pgcd(b, r)
-
 # ===== Q 1.3 ====== #
 
 
@@ -105,39 +106,35 @@ def key_creation():
 def convert_msg(msg):
     """
     Prend en entrée un message textuel
-    Il est convertit grace à la table ascii, chaque charractère est convertit en 
-    un nombre à trois chiffre renvoie une lite de nombre, groupé 4 à 4 pour évité 
+    Il est convertit grace à la table ascii, chaque charractère est convertit en
+    un nombre à trois chiffre renvoie une lite de nombre, groupé 4 à 4 pour évité
     les attaques fréquentielles et pour ne pas avoir besoin d'un n trop grand
     """
     converted_msg = ""
     converted_msg_tab = []
 
     for character in msg:
-        tmp = str(ord(character))
-        tmp = tmp.zfill(3)
-        converted_msg += tmp
+        converted_msg += str(ord(character)).zfill(3)
 
-    for i in range(4, len(converted_msg)+1, 4):
-        converted_msg_tab.append(converted_msg[i-4: i])
-        x = i
-    if len(converted_msg) % 4 != 0:
-        converted_msg_tab.append(converted_msg[x:])
-
-    for i in range(0, len(converted_msg_tab), 1):
-        converted_msg_tab[i] = int(converted_msg_tab[i])
+    piv1, piv2 = 0, 4
+    while len(converted_msg) % piv2 != 0:
+        converted_msg = converted_msg + "0"
+    while piv2 <= len(converted_msg):
+        converted_msg_tab.append(converted_msg[piv1: piv2])
+        piv1, piv2 = piv2, piv2 + 4
     return converted_msg_tab
 
 
 def encryption_msg(n, pub, msg):
     """
     encryption_msg:
-        prend en entrée 2 entier (n et pub qui sont la clef publique) 
+        prend en entrée 2 entier (n et pub qui sont la clef publique)
         et 1 liste d'entier (msg qui contient le message converti en ASCII)
     retourne le message crypté(crypted_msg)
     """
     crypted_msg = []
-    for i in range(0, len(msg), 1):
-        crypted_msg.append(msg[i]**pub % n)
+    for i in msg:
+        crypted_msg.append(int(i)**pub % n)
     return crypted_msg
 
 # ===== Q 1.5 ===== #
@@ -148,42 +145,40 @@ def decryption_msg(n, priv, msg):
     decryption_msg:
         prend en entrée 2 entier ( n et priv qui sont la clé privée)
         et une liste d'entier (msg qui contient le message crypté)
-    retourne le message décrypté en ASCII(decrypted_msg2)
+        retourne le message décrypté, en le passant d'un format ascii à textuel
+        grace a une autre fonction
     """
+    decrypted_msg_ascii = []
     decrypted_msg = []
-    decrypted_msg2 = []
 
     if priv < 0:
         priv = -priv
         for i in range(0, len(msg), 1):
             tmp = msg[i]**priv % n
             _, tmp2, _ = extended_gcd(tmp, n)
-            decrypted_msg.append(tmp2)
+            decrypted_msg_ascii.append(tmp2)
     else:
-        for i in range(0, len(msg), 1):
-            decrypted_msg.append(msg[i]**priv % n)
+        for i in msg:
+            decrypted_msg_ascii.append(i**priv % n)
 
-    for i in range(0, len(decrypted_msg), 1):
-        tmp = str(decrypted_msg[i])
+    for i in range(0, len(decrypted_msg_ascii), 1):
+        tmp = str(decrypted_msg_ascii[i])
         tmp = tmp.zfill(4)
-        decrypted_msg2.append(tmp)
-    return decrypted_msg2
+        decrypted_msg.append(tmp)
+
+    return decrypted_msg
 
 
-def reconvert_msg(decrypted_msg):
-    msg = ""
-    msgtab = []
-    msgfinal = ""
+def reconvert_msg(decrypted_msg_ascii):
+    decrypted_msg_ascii = ''.join(decrypted_msg_ascii)
+    decrypted_msg = ""
+    piv1, piv2 = 0, 3
+    while piv2 <= len(decrypted_msg_ascii):
 
-    for i in range(0, len(decrypted_msg), 1):
-        msg = msg + decrypted_msg[i]
+        decrypted_msg = decrypted_msg + \
+            chr(int(decrypted_msg_ascii[piv1:piv2]))
+        piv1, piv2 = piv2, piv2 + 3
 
-    for i in range(0, len(msg), 3):
-        msgtab.append(msg[i:i+3])
+    return decrypted_msg
 
-    for i in range(0, len(msgtab), 1):
-        msgfinal = msgfinal + chr(int(msgtab[i]))
-
-    return msgfinal
-
-    # pb avec alan nu et les 0 en gros on peut pas fill(4) pour decryption
+# pb avec had qui renvois un nul en plus en gros c'est a cause de ascii ou 000 est NUl un caractère de controle donc jsp
