@@ -9,7 +9,7 @@ def list_prim(n):
     """
     Renvoie un tableau de tous les nombres premiers entre 0 et n
         1 entrée n
-    retourne une tableau de tous les nombres premiers
+    renvoie une tableau de tous les nombres premiers
     """
     result = []
     if n <= 1:
@@ -39,13 +39,14 @@ def pgcd(a, b):
     Pgcd
         prend en entrée 2 entiers:
             a et b
-        retourne 2 entiers b et r
-        b le plus grand diviseur commun
+        renvoie 2 entiers b et r
+        d le plus grand diviseur commun
         r le reste
     """
     r = a % b
     if r == 0:
-        return b
+        d = b
+        return d
     return pgcd(b, r)
 
 
@@ -54,7 +55,7 @@ def extended_gcd(a, b):
     Algorithme d'Euclide
         Prend en entrée 2 entiers:
             a et b
-        retourne 3 entiers d,u,v
+        renvoie 3 entiers d,u,v
         d est le pgcd des 2 entier a et b
         u et v sont les coéficient de Bezout
     """
@@ -130,7 +131,7 @@ def encryption_msg(n, pub, msg):
     encryption_msg:
         prend en entrée 2 entier (n et pub qui sont la clef publique)
         et 1 liste d'entier (msg qui contient le message converti en ASCII)
-    retourne le message crypté(crypted_msg)
+    renvoie le message chiffré(crypted_msg)
     """
     crypted_msg = []
     for i in msg:
@@ -144,8 +145,8 @@ def decryption_msg(n, priv, msg):
     """
     decryption_msg:
         prend en entrée 2 entier ( n et priv qui sont la clé privée)
-        et une liste d'entier (msg qui contient le message crypté)
-        retourne le message décrypté, en le passant d'un format ascii à textuel
+        et une liste d'entier (msg qui contient le message chiffré)
+        renvoie le message déchiffré, en le passant d'un format ascii à textuel
         grace a une autre fonction
     """
     decrypted_msg_ascii = []
@@ -170,6 +171,12 @@ def decryption_msg(n, priv, msg):
 
 
 def reconvert_msg(decrypted_msg_ascii):
+    """
+    reconvert_msg
+        prends en entrée un message déchiffré en ASCII
+        convertit ce message en char
+        renvoie le message en string
+    """
     decrypted_msg_ascii = ''.join(decrypted_msg_ascii)
     decrypted_msg = ""
     piv1, piv2 = 0, 3
@@ -183,6 +190,8 @@ def reconvert_msg(decrypted_msg_ascii):
     return decrypted_msg
 
 # pb avec had qui renvois un nul en plus en gros c'est a cause de ascii ou 000 est NUl un caractère de controle donc jsp
-""" 
+
 n,pub,priv=key_creation()
-msg = reconvert_msg(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("")))) """
+
+msg = reconvert_msg(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est ce"))))
+print(msg)
