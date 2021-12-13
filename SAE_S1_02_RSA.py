@@ -173,10 +173,11 @@ def reconvert_msg(decrypted_msg_ascii):
     decrypted_msg_ascii = ''.join(decrypted_msg_ascii)
     decrypted_msg = ""
     piv1, piv2 = 0, 3
-    while piv2 <= len(decrypted_msg_ascii):
 
-        decrypted_msg = decrypted_msg + \
-            chr(int(decrypted_msg_ascii[piv1:piv2]))
+    while piv2 <= len(decrypted_msg_ascii):
+        tmp = chr(int(decrypted_msg_ascii[piv1:piv2]))
+        if tmp != "000":
+            decrypted_msg = decrypted_msg + tmp
         piv1, piv2 = piv2, piv2 + 3
 
     return decrypted_msg
