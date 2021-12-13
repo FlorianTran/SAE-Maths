@@ -172,7 +172,6 @@ def decryption_msg(n, priv, msg):
 def reconvert_msg(decrypted_msg_ascii):
     decrypted_msg_ascii = ''.join(decrypted_msg_ascii)
     decrypted_msg = ""
-
     piv1, piv2 = 0, 3
     while piv2 <= len(decrypted_msg_ascii):
 
