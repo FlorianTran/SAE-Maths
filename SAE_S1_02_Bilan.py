@@ -77,5 +77,20 @@ def reconvert_binary(vect_msg):
 """ exemple """
 
 exemple = "Message de test stp marche"
+
 n, pub, priv = rsa.key_creation()
-rsa.convert_msg(exemple)
+
+msg_crypt = rsa.encryption_msg(n, pub, rsa.convert_msg(exemple))
+
+msg_crypt_copy = msg_crypt
+
+msg_noise = sim_noise(convert_binary(msg_crypt))
+
+msg_crypt_denoise = denoise_msg(msg_noise)
+
+msg_crypt_2 = reconvert_binary(msg_crypt_denoise)
+
+msg_final = rsa.reconvert_msg(rsa.decryption_msg(n, priv, msg_crypt))
+
+print(exemple)
+print(msg_final)
