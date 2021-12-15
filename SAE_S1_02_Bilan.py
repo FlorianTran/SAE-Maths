@@ -48,17 +48,34 @@ def sim_noise(tab_vect):
     return tab_vect_noise
 
 
-def denoise(vect_msg):
-    pass  # regarde la distance ou
+def denoise(vect):
+    for vect_origin in corr.allvect_7:
+        if corr.distance(vect, vect_origin) == 1:
+            return vect_origin
+    return vect
+
+
+def denoise_msg(tab_vect_noise):
+    for i in range(0, len(tab_vect_noise)):
+        for j in range(0, len(tab_vect_noise[i])):
+            tab_vect_noise[i][j] = denoise(tab_vect_noise[i][j])
+    return tab_vect_noise
 
 
 def reconvert_binary(vect_msg):
     msg = []
     for num in vect_msg:
         total = ""
-        for v in num:
-            a, b, c, d = v[2], v[4], v[5], v[6]
+        for vect in num:
+            a, b, c, d = vect[2], vect[4], vect[5], vect[6]
             val = 8*a+4*b+2*c+d
             total = total + str(val)
         msg.append(int(total))
     return msg
+
+
+""" exemple """
+
+exemple = "Message de test stp marche"
+n, pub, priv = rsa.key_creation()
+rsa.convert_msg(exemple)
