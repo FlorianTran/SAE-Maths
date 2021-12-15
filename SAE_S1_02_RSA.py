@@ -88,6 +88,7 @@ def key_creation():
         créer une clé public, n une partie de clé publique et une clé privé
     """
     tabPrim = list_prim(1000)
+    
     p = tabPrim[random.randrange(len(tabPrim))]
     q = tabPrim[random.randrange(len(tabPrim))]
     n = p * q
@@ -98,7 +99,6 @@ def key_creation():
     while pgcd(pub, phiN) != 1:
         pub = tabPrim[random.randrange(len(tabPrim))]
     _, priv, _ = extended_gcd(pub, phiN)
-
     return n, pub, priv
 
 # ===== Q 1.4 ===== #
@@ -151,7 +151,7 @@ def decryption_msg(n, priv, msg):
     """
     decrypted_msg_ascii = []
     decrypted_msg = []
-
+    
     if priv < 0:
         priv = -priv
         for i in range(0, len(msg), 1):
@@ -162,11 +162,10 @@ def decryption_msg(n, priv, msg):
         for i in msg:
             decrypted_msg_ascii.append(i**priv % n)
 
-    for i in range(0, len(decrypted_msg_ascii), 1):
-        tmp = str(decrypted_msg_ascii[i])
-        tmp = tmp.zfill(4)
-        decrypted_msg.append(tmp)
-
+        for i in range(0, len(decrypted_msg_ascii), 1):
+            tmp = str(decrypted_msg_ascii[i])
+            tmp = tmp.zfill(4)
+            decrypted_msg.append(tmp)
     return decrypted_msg
 
 
@@ -189,9 +188,14 @@ def reconvert_msg(decrypted_msg_ascii):
 
     return decrypted_msg
 
-# pb avec had qui renvois un nul en plus en gros c'est a cause de ascii ou 000 est NUl un caractère de controle donc jsp
-
-""" n,pub,priv=key_creation()
-
-msg = reconvert_msg(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est ce"))))
-print(msg) """
+     
+for i in range(0,1000,1):
+    n,pub,priv=key_creation()
+    while priv < 0 or n < 10000:
+        n,pub,priv=key_creation()
+    """ print(convert_msg("Bonjour les amis, est - ce"))
+    print(encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce")))
+    print(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce")))) """
+    print(n,pub,priv)
+    msg = reconvert_msg(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce"))))
+    print(msg)
