@@ -88,7 +88,7 @@ def key_creation():
         créer une clé public, n une partie de clé publique et une clé privé
     """
     tabPrim = list_prim(1000)
-    
+
     p = tabPrim[random.randrange(len(tabPrim))]
     q = tabPrim[random.randrange(len(tabPrim))]
     n = p * q
@@ -151,7 +151,7 @@ def decryption_msg(n, priv, msg):
     """
     decrypted_msg_ascii = []
     decrypted_msg = []
-    
+
     if priv < 0:
         priv = -priv
         for i in range(0, len(msg), 1):
@@ -188,14 +188,14 @@ def reconvert_msg(decrypted_msg_ascii):
 
     return decrypted_msg
 
-     
-for i in range(0,1000,1):
+
+""" for i in range(0,1000,1):
     n,pub,priv=key_creation()
     while priv < 0 or n < 10000:
-        n,pub,priv=key_creation()
-    """ print(convert_msg("Bonjour les amis, est - ce"))
+        n,pub,priv=key_creation() """
+""" print(convert_msg("Bonjour les amis, est - ce"))
     print(encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce")))
     print(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce")))) """
-    print(n,pub,priv)
+""" print(n,pub,priv)
     msg = reconvert_msg(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce"))))
-    print(msg)
+    print(msg) """
