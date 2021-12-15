@@ -1,5 +1,6 @@
 import numpy as np
-import SAE_S1_02_RSA as RSA
+import SAE_S1_02_RSA as rsa
+import SAE_S1_02_Corr as corr
 
 
 def convert_binary(crypted_msg):
