@@ -95,7 +95,7 @@ def reconvert_binary(vect_msg):
 
 """ exemple d'un message"""
 
-exemple = "Voici un exemple de messsage, va-t'il marcher ? je me pose la question."
+exemple = "test"
 print(exemple)
 
 """On créer d'abord la clef publique et la clef privée. """
@@ -116,3 +116,17 @@ msg_final = rsa.reconvert_msg(rsa.decryption_msg(
     n, priv, reconvert_binary(msg_crypt_denoise)))
 
 print(msg_final)
+
+
+def test(x):
+    exemple = "test"
+    cont = 0
+    while x > 0:
+        n, pub, priv = rsa.key_creation()
+        msg_final = rsa.reconvert_msg(rsa.decryption_msg(n, priv, reconvert_binary(denoise_msg(
+            sim_noise(convert_binary(rsa.encryption_msg(n, pub, rsa.convert_msg(exemple))))))))
+        if exemple != msg_final:
+            print(x, n, pub, priv, msg_final)
+            cont = cont + 1
+        x = x-1
+    return cont
