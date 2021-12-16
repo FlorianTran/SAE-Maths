@@ -120,13 +120,13 @@ print(msg_final)
 
 def test(x):
     exemple = "test"
-    cont = 0
+    nberr = 0
     while x > 0:
         n, pub, priv = rsa.key_creation()
         msg_final = rsa.reconvert_msg(rsa.decryption_msg(n, priv, reconvert_binary(denoise_msg(
             sim_noise(convert_binary(rsa.encryption_msg(n, pub, rsa.convert_msg(exemple))))))))
         if exemple != msg_final:
             print(x, n, pub, priv, msg_final)
-            cont = cont + 1
+            nberr = nberr + 1
         x = x-1
-    return cont
+    return print("Il y a", nberr, "erreur")
