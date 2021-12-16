@@ -4,7 +4,7 @@ allvect_4 = [[0, 0, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0], [0, 0, 1, 1], [0, 1, 0, 0
 
 def application(vect_4):
     """
-    prend un vecteur de taille 4
+    prend en entrée un vecteur de taille 4
     renvoie le resultat de l'application décrit dans la partie du sujet
     """
     a, b, c, d = vect_4[0], vect_4[1], vect_4[2], vect_4[3]
@@ -14,7 +14,7 @@ def application(vect_4):
 
 def tab_vect_7(allvect_4):
     """
-    Prend l'ensemble des vecteurs bianire de taille 4
+    Prend en entrée l'ensemble des vecteurs bianire de taille 4
     renvoie dans un tableau leur application
     """
     all_vect_7 = []
@@ -28,7 +28,7 @@ allvect_7 = tab_vect_7(allvect_4)
 
 def weight(vect_7):
     """
-    prend un vecteur bianire
+    prend en entrée un vecteur bianire
     renvoie son poids, c'est a dire la somme des valeurs de ces bits
     """
     sum = 0
@@ -39,7 +39,7 @@ def weight(vect_7):
 
 def distance(vect1, vect2):
     """
-    prend 2 vecteurs binaires
+    prend en entrée 2 vecteurs binaires
     renvoie le poids (func weight) du vecteur (vect1+vect2)
     """
     vect3 = []

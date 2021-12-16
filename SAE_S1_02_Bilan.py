@@ -22,12 +22,10 @@ def convert_binary(crypted_msg):
         i = i+1
     return list_vect
 
-    # en gros on met chiffre par chiffre en binaire = chiffre = 4 bits apres avec M on le met en vecteur
-
 
 def noise(vect_msg):
     """
-    prend un vecteur vect_msg
+    prend en entrée un vecteur vect_msg
     renvoie ce vecteur potentiellement bruite (un seul bit du vecteur peut être altéré)
     """
     # on fait une copie du vecteur initial
@@ -42,7 +40,7 @@ def noise(vect_msg):
 
 def sim_noise(tab_vect):
     """
-    prend un tableau de tableau de vecteur (résultat de convert_binary)
+    prend en entrée un tableau de tableau de vecteur (résultat de convert_binary)
     renvoie ce même tableau avec des vecteurs potentiellement bruité grace à la fonction noise
     """
     tab_vect_noise = []
@@ -67,7 +65,7 @@ def denoise(vect):
 
 def denoise_msg(tab_vect_noise):
     """
-    prend un tableau de tableau de vecteur (taille 7)
+    prend en entrée un tableau de tableau de vecteur (taille 7)
     renvoie ce même tableau avec tous les vecteurs corrigés, sans bruit
     """
     for i in range(0, len(tab_vect_noise)):
@@ -78,7 +76,7 @@ def denoise_msg(tab_vect_noise):
 
 def reconvert_binary(vect_msg):
     """
-    prend un tableau de tableau de vecteur et reconvertit chaque vecteur en chiffre 
+    prend en entrée un tableau de tableau de vecteur et reconvertit chaque vecteur en chiffre 
     puis recréer les nombre du message crypté
     renvoie un tableau d'entier
     """
@@ -93,40 +91,49 @@ def reconvert_binary(vect_msg):
     return msg
 
 
-""" exemple d'un message"""
+""" exemple d'un envoie de message sécurisé étape par étape """
 
-exemple = "test"
-print(exemple)
 
-"""On créer d'abord la clef publique et la clef privée. """
+msg_exemple = "Ceci est un message de test"
+
+# On créer d'abord la clef publique et la clef privée.
 n, pub, priv = rsa.key_creation()
 
-""" On convertit le message grace à la table ASCII et on l'encrypte. """
-msg_crypt = rsa.encryption_msg(n, pub, rsa.convert_msg(exemple))
+# On convertit le message grace à la table ASCII et on l'encrypte.
+msg_crypt = rsa.encryption_msg(n, pub, rsa.convert_msg(msg_exemple))
 
-""" On simule un envoie, avec du bruit, pour cela on on passe d'un le message crypter en binaire. """
+# On simule un envoie, avec du bruit, pour cela on on passe d'un le message crypter en binaire.
 msg_noise = sim_noise(convert_binary(msg_crypt))
 
-""" Ici on va venir enlever le bruit. """
+# Ici on va venir enlever le bruit.
 msg_crypt_denoise = denoise_msg(msg_noise)
 
-""" Pour finir on va reconvertir le msg qui est en binaire pour ensuite pouvoir le 
-decrypter et enfin le reconvertir en pleine lettre (avec la table ASCII) """
+# Pour finir on va reconvertir le msg qui est en binaire pour ensuite pouvoir le decrypter et enfin le reconvertir en pleine lettre (avec la table ASCII)
 msg_final = rsa.reconvert_msg(rsa.decryption_msg(
     n, priv, reconvert_binary(msg_crypt_denoise)))
 
+# Pour finir on print le message initial et celui reçu après toutes les étapes, on constate qu'ils sont identiques
+print(msg_exemple)
 print(msg_final)
 
 
-def test(x):
-    exemple = "test"
+exemple_1 = "test"
+exemple_2 = "!#$%&'()*+,-./0123456789:.<=>?'abcdefghigklmnopqrstuvwxyz{|}~@ ABCDEFGHIJKLMNOPQRSTUVVWXYZ[\]^"
+
+
+def test(x, msg_exemple):
+    """
+    prend un entier x, et un string msg_exemple en entrée
+    fonction qui test l'ensemble des fonctions, x fois sur le message msg_exemple
+    renvoie le nombre d'erreurs
+    """
     nberr = 0
     while x > 0:
         n, pub, priv = rsa.key_creation()
         msg_final = rsa.reconvert_msg(rsa.decryption_msg(n, priv, reconvert_binary(denoise_msg(
-            sim_noise(convert_binary(rsa.encryption_msg(n, pub, rsa.convert_msg(exemple))))))))
-        if exemple != msg_final:
+            sim_noise(convert_binary(rsa.encryption_msg(n, pub, rsa.convert_msg(msg_exemple))))))))
+        if msg_exemple != msg_final:
             print(x, n, pub, priv, msg_final)
             nberr = nberr + 1
         x = x-1
-    return print("Il y a", nberr, "erreur")
+    return print("nberr =", nberr)

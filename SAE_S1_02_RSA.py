@@ -34,10 +34,8 @@ def is_prim(n):
 
 def pgcd(a, b):
     """
-    prend en entrée 2 entiers:
-        a et b
-    renvoie 2 entiers b et r:
-        d le plus grand diviseur commun et r le reste
+    prend en entrée 2 entiers:a et b
+    renvoie 2 entiers b et r: b le plus grand diviseur commun et r le reste
     """
     r = a % b
     if r == 0:
@@ -48,11 +46,10 @@ def pgcd(a, b):
 
 def extended_gcd(a, b):
     """
-    prend en entrée 2 entiers:
-        a et b
+    prend en entrée 2 entiers:a et b
     renvoie 3 entiers d,u,v:
-        d est le pgcd des 2 entier a et b
-        u et v sont les coéficient de Bezout
+    d est le pgcd des 2 entier a et b
+    u et v sont les coéficient de Bezout
     """
     u0 = 1
     u1 = 0
@@ -80,8 +77,9 @@ def extended_gcd(a, b):
 def key_creation():
     """
 créer une clé public, n une partie de clé publique et une clé privé, la fonction les renvoie. (On ne veux pas de n < 10000 car nous pour
-                                                                                               crypter n doit etre supérieur à la valeur du message or nous avons des message de 4 chiffres et donc msg < 10000) nous avons aussi fait
-le choix de ne pas prendre des priv avec une valeur négative car elle posait trop problème malgré le fait que l'on prenne son inverse etc.
+crypter n doit etre supérieur à la valeur du message or nous avons des message de 4 chiffres et donc msg < 10000) nous avons aussi fait
+le choix de ne pas prendre des priv avec une valeur négative car elle posait trop problème malgré le fait que l'on puisse prendre son inverse
+avec extended_gcp etc.s
 """
     tabPrim = list_prim(1000)
     p = tabPrim[random.randrange(len(tabPrim))]
@@ -105,34 +103,6 @@ le choix de ne pas prendre des priv avec une valeur négative car elle posait tr
 
     return n, pub, priv
 
-
-def key():
-    """retourne un dictionnaire contenant la clé privée et la clé publique sous forme de tuples: {priv:(clé privée),pub:(clé publique)}"""
-
-    # choix au hasard de deux entiers premiers (n et q)
-    p = np.random.choice(1000, 1)
-    q = np.random.choice(1000, 1)
-
-    while isprem(p) is False:
-        p = np.random.choice(1000, 1)
-
-    while isprem(q) is False:
-        q = np.random.choice(1000, 1)
-
-    # calcul de n et m
-    n = p*q
-    m = (p-1)*(q-1)
-
-    # recherche de c premier de m (c'est a dire tel que pgcd(m,c)=1 ) et de d = pgcde(m,c) tel que 2 < d < m
-    r = 10
-    d = 0
-    while r != 1 or d <= 2 or d >= m:
-        c = np.random.choice(1000, 1)
-        r, d, v = pgcde(c, m)
-
-    n, c, d = int(n), int(c), int(d)
-
-    return n, c, d
 
 # ===== Q 1.4 ===== #
 
@@ -184,20 +154,20 @@ def decryption_msg(n, priv, msg):
     decrypted_msg_ascii = []
     decrypted_msg = []
 
-    if priv < 0:
+    """ if priv < 0:
         priv = -priv
         for i in range(0, len(msg), 1):
             tmp = msg[i]**priv % n
             _, tmp2, _ = extended_gcd(tmp, n)
-            decrypted_msg_ascii.append(tmp2)
-    else:
-        for i in msg:
-            decrypted_msg_ascii.append(i**priv % n)
+            decrypted_msg_ascii.append(tmp2) """
 
-        for i in range(0, len(decrypted_msg_ascii), 1):
-            tmp = str(decrypted_msg_ascii[i])
-            tmp = tmp.zfill(4)
-            decrypted_msg.append(tmp)
+    for i in msg:
+        decrypted_msg_ascii.append(i**priv % n)
+
+    for i in range(0, len(decrypted_msg_ascii), 1):
+        tmp = str(decrypted_msg_ascii[i])
+        tmp = tmp.zfill(4)
+        decrypted_msg.append(tmp)
     return decrypted_msg
 
 
@@ -218,15 +188,3 @@ def reconvert_msg(decrypted_msg_ascii):
         piv1, piv2 = piv2, piv2 + 3
 
     return decrypted_msg
-
-
-""" for i in range(0,1000,1):
-    n,pub,priv=key_creation()
-    while priv < 0 or n < 10000:
-        n,pub,priv=key_creation() """
-""" print(convert_msg("Bonjour les amis, est - ce"))
-    print(encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce")))
-    print(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce")))) """
-""" print(n,pub,priv)
-    msg = reconvert_msg(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce"))))
-    print(msg) """
