@@ -154,6 +154,7 @@ def decryption_msg(n, priv, msg):
     decrypted_msg_ascii = []
     decrypted_msg = []
 
+    # nous avons abandonné l'idée de prendre des clé privé négatif car cela créer certain problème de temps en temps
     """ if priv < 0:
         priv = -priv
         for i in range(0, len(msg), 1):
