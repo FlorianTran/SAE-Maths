@@ -5,7 +5,8 @@ import SAE_S1_02_Corr as corr
 
 def convert_binary(crypted_msg):
     """
-    Prend en entrée un tableau d'entiers
+    prend en entrée un tableau d'entiers 
+    renvoie un tableau de tableau de vect binaire de taille 7 qui corresponde chaqun à un chiffre des entiers d'entrée
     """
     list_vect = []
     i = 0
@@ -26,7 +27,8 @@ def convert_binary(crypted_msg):
 
 def noise(vect_msg):
     """
-    prend un vecteur vect_msg et renvoie ce vecteur potentiellement bruite
+    prend un vecteur vect_msg
+    renvoie ce vecteur potentiellement bruite (un seul bit du vecteur peut être altéré)
     """
     # on fait une copie du vecteur initial
     vect = vect_msg.copy()
@@ -39,6 +41,10 @@ def noise(vect_msg):
 
 
 def sim_noise(tab_vect):
+    """
+    prend un tableau de tableau de vecteur (résultat de convert_binary)
+    renvoie ce même tableau avec des vecteurs potentiellement bruité grace à la fonction noise
+    """
     tab_vect_noise = []
     for num in tab_vect:
         tmp = []
@@ -49,6 +55,10 @@ def sim_noise(tab_vect):
 
 
 def denoise(vect):
+    """
+    prend un vecteur binaire de taille7
+    renvoie ce même vecteur si il n'est pas bruité sinon renvoie le vecteur corrigé
+    """
     for vect_origin in corr.allvect_7:
         if corr.distance(vect, vect_origin) == 1:
             return vect_origin
@@ -56,6 +66,10 @@ def denoise(vect):
 
 
 def denoise_msg(tab_vect_noise):
+    """
+    prend un tableau de tableau de vecteur (taille 7)
+    renvoie ce même tableau avec tous les vecteurs corrigés, sans bruit
+    """
     for i in range(0, len(tab_vect_noise)):
         for j in range(0, len(tab_vect_noise[i])):
             tab_vect_noise[i][j] = denoise(tab_vect_noise[i][j])
@@ -63,6 +77,11 @@ def denoise_msg(tab_vect_noise):
 
 
 def reconvert_binary(vect_msg):
+    """
+    prend un tableau de tableau de vecteur et reconvertit chaque vecteur en chiffre 
+    puis recréer les nombre du message crypté
+    renvoie un tableau d'entier
+    """
     msg = []
     for num in vect_msg:
         total = ""
@@ -91,7 +110,8 @@ msg_noise = sim_noise(convert_binary(msg_crypt))
 """ Ici on va venir enlever le bruit. """
 msg_crypt_denoise = denoise_msg(msg_noise)
 
-""" Pour finir on va reconvertir le msg qui est en binaire pour ensuite pouvoir le decrypter et enfin le reconvertir en pleine lettre (avec la table ASCII) """
+""" Pour finir on va reconvertir le msg qui est en binaire pour ensuite pouvoir le 
+decrypter et enfin le reconvertir en pleine lettre (avec la table ASCII) """
 msg_final = rsa.reconvert_msg(rsa.decryption_msg(
     n, priv, reconvert_binary(msg_crypt_denoise)))
 
