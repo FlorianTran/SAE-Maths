@@ -5,7 +5,7 @@ import SAE_S1_02_Corr as corr
 
 def convert_binary(crypted_msg):
     """
-    convert un tableau d'entier en un tableau de tableau de vecteur
+    Prend en entrée un tableau d'entiers
     """
     list_vect = []
     i = 0
@@ -74,23 +74,25 @@ def reconvert_binary(vect_msg):
     return msg
 
 
-""" exemple """
+""" exemple d'un message"""
 
-exemple = "Message de test stp marche"
+exemple = "Voici un exemple de messsage, va-t'il marcher ? je me pose la question."
+print(exemple)
 
+"""On créer d'abord la clef publique et la clef privée. """
 n, pub, priv = rsa.key_creation()
 
+""" On convertit le message grace à la table ASCII et on l'encrypte. """
 msg_crypt = rsa.encryption_msg(n, pub, rsa.convert_msg(exemple))
 
-msg_crypt_copy = msg_crypt
-
+""" On simule un envoie, avec du bruit, pour cela on on passe d'un le message crypter en binaire. """
 msg_noise = sim_noise(convert_binary(msg_crypt))
 
+""" Ici on va venir enlever le bruit. """
 msg_crypt_denoise = denoise_msg(msg_noise)
 
-msg_crypt_2 = reconvert_binary(msg_crypt_denoise)
+""" Pour finir on va reconvertir le msg qui est en binaire pour ensuite pouvoir le decrypter et enfin le reconvertir en pleine lettre (avec la table ASCII) """
+msg_final = rsa.reconvert_msg(rsa.decryption_msg(
+    n, priv, reconvert_binary(msg_crypt_denoise)))
 
-msg_final = rsa.reconvert_msg(rsa.decryption_msg(n, priv, msg_crypt))
-
-print(exemple)
 print(msg_final)

@@ -7,9 +7,9 @@ import random
 
 def list_prim(n):
     """
-    Renvoie un tableau de tous les nombres premiers entre 0 et n
-        1 entrée n
-    renvoie une tableau de tous les nombres premiers
+    list_prim:
+        Prend en entrée un entier n
+        Renvoie un tableau de tous les nombres premiers entre 0 et n
     """
     result = []
     if n <= 1:
@@ -22,9 +22,9 @@ def list_prim(n):
 
 def is_prim(n):
     """
-    Renvoie si nombre n est enier ou pas
-        1 entrée n
-    retourn vrai ou faux
+    is_prim:
+        Prend en entrée
+        Renvoie si nombre n est un nombre entier ou pas
     """
     for i in range(2, int(math.sqrt(n)) + 1):
         if n % i == 0:
@@ -39,9 +39,8 @@ def pgcd(a, b):
     Pgcd
         prend en entrée 2 entiers:
             a et b
-        renvoie 2 entiers b et r
-        d le plus grand diviseur commun
-        r le reste
+        renvoie 2 entiers b et r:
+            d le plus grand diviseur commun et r le reste
     """
     r = a % b
     if r == 0:
@@ -55,9 +54,9 @@ def extended_gcd(a, b):
     Algorithme d'Euclide
         Prend en entrée 2 entiers:
             a et b
-        renvoie 3 entiers d,u,v
-        d est le pgcd des 2 entier a et b
-        u et v sont les coéficient de Bezout
+        renvoie 3 entiers d,u,v:
+            d est le pgcd des 2 entier a et b
+            u et v sont les coéficient de Bezout
     """
     u0 = 1
     u1 = 0
@@ -85,7 +84,7 @@ def extended_gcd(a, b):
 def key_creation():
     """
     Key_creation
-        créer une clé public, n une partie de clé publique et une clé privé
+        Créer une clé public, n une partie de clé publique et une clé privé, la fonction les renvoie.
     """
     tabPrim = list_prim(1000)
 
@@ -106,10 +105,12 @@ def key_creation():
 
 def convert_msg(msg):
     """
-    Prend en entrée un message textuel
-    Il est convertit grace à la table ascii, chaque charractère est convertit en
-    un nombre à trois chiffre renvoie une lite de nombre, groupé 4 à 4 pour évité
-    les attaques fréquentielles et pour ne pas avoir besoin d'un n trop grand
+    convert_msg:
+        Prend en entrée un message textuel,
+        il est convertit grace à la table ASCII, chaque charractère est convertit en
+        un nombre à trois chiffre renvoie une tableau de nombre, groupé 4 à 4 pour évité
+        les attaques fréquentielles et pour ne pas avoir besoin d'un n trop grand (n >= 10000).
+        Renvoie le message converti.
     """
     converted_msg = ""
     converted_msg_tab = []
@@ -129,9 +130,9 @@ def convert_msg(msg):
 def encryption_msg(n, pub, msg):
     """
     encryption_msg:
-        prend en entrée 2 entier (n et pub qui sont la clef publique)
-        et 1 liste d'entier (msg qui contient le message converti en ASCII)
-    renvoie le message chiffré(crypted_msg)
+        Prend en entrée 2 entier (n et pub qui sont la clef publique)
+        et 1 tableau d'entier (msg qui contient le message converti en ASCII)
+        Renvoie le message chiffré(crypted_msg)
     """
     crypted_msg = []
     for i in msg:
@@ -144,9 +145,9 @@ def encryption_msg(n, pub, msg):
 def decryption_msg(n, priv, msg):
     """
     decryption_msg:
-        prend en entrée 2 entier ( n et priv qui sont la clé privée)
-        et une liste d'entier (msg qui contient le message chiffré)
-        renvoie le message déchiffré, en le passant d'un format ascii à textuel
+        Prend en entrée 2 entier ( n et priv qui sont la clé privée)
+        et un tableau d'entier (msg qui contient le message chiffré)
+        Renvoie le message déchiffré, en le passant d'un format ascii à textuel
         grace a une autre fonction
     """
     decrypted_msg_ascii = []
@@ -172,9 +173,9 @@ def decryption_msg(n, priv, msg):
 def reconvert_msg(decrypted_msg_ascii):
     """
     reconvert_msg
-        prends en entrée un message déchiffré en ASCII
+        Prend en entrée un message déchiffré en ASCII
         convertit ce message en char
-        renvoie le message en string
+        Renvoie le message en string
     """
     decrypted_msg_ascii = ''.join(decrypted_msg_ascii)
     decrypted_msg = ""
