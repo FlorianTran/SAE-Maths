@@ -7,9 +7,8 @@ import random
 
 def list_prim(n):
     """
-    Renvoie un tableau de tous les nombres premiers entre 0 et n
-        1 entrée n
-    renvoie une tableau de tous les nombres premiers
+    prend en entrée un entier n
+    renvoie un tableau de tous les nombres premiers entre 0 et n
     """
     result = []
     if n <= 1:
@@ -22,9 +21,8 @@ def list_prim(n):
 
 def is_prim(n):
     """
-    Renvoie si nombre n est enier ou pas
-        1 entrée n
-    retourn vrai ou faux
+    prend en entrée
+    renvoie si nombre n est un nombre entier ou pas
     """
     for i in range(2, int(math.sqrt(n)) + 1):
         if n % i == 0:
@@ -36,12 +34,10 @@ def is_prim(n):
 
 def pgcd(a, b):
     """
-    Pgcd
-        prend en entrée 2 entiers:
-            a et b
-        renvoie 2 entiers b et r
-        d le plus grand diviseur commun
-        r le reste
+    prend en entrée 2 entiers:
+        a et b
+    renvoie 2 entiers b et r:
+        d le plus grand diviseur commun et r le reste
     """
     r = a % b
     if r == 0:
@@ -52,10 +48,9 @@ def pgcd(a, b):
 
 def extended_gcd(a, b):
     """
-    Algorithme d'Euclide
-        Prend en entrée 2 entiers:
-            a et b
-        renvoie 3 entiers d,u,v
+    prend en entrée 2 entiers:
+        a et b
+    renvoie 3 entiers d,u,v:
         d est le pgcd des 2 entier a et b
         u et v sont les coéficient de Bezout
     """
@@ -84,11 +79,10 @@ def extended_gcd(a, b):
 
 def key_creation():
     """
-    Key_creation
-        créer une clé public, n une partie de clé publique et une clé privé
+    créer une clé public, n une partie de clé publique et une clé privé, la fonction les renvoie.
     """
     tabPrim = list_prim(1000)
-    
+
     p = tabPrim[random.randrange(len(tabPrim))]
     q = tabPrim[random.randrange(len(tabPrim))]
     n = p * q
@@ -99,6 +93,9 @@ def key_creation():
     while pgcd(pub, phiN) != 1:
         pub = tabPrim[random.randrange(len(tabPrim))]
     _, priv, _ = extended_gcd(pub, phiN)
+
+    while priv < 0 or n < 1000:
+        n, pub, priv = key_creation()
     return n, pub, priv
 
 # ===== Q 1.4 ===== #
@@ -106,10 +103,11 @@ def key_creation():
 
 def convert_msg(msg):
     """
-    Prend en entrée un message textuel
-    Il est convertit grace à la table ascii, chaque charractère est convertit en
-    un nombre à trois chiffre renvoie une lite de nombre, groupé 4 à 4 pour évité
-    les attaques fréquentielles et pour ne pas avoir besoin d'un n trop grand
+    prend en entrée un message textuel,
+    il est convertit grace à la table ASCII, chaque charractère est convertit en
+    un nombre à trois chiffre renvoie une tableau de nombre, groupé 4 à 4 pour évité
+    les attaques fréquentielles et pour ne pas avoir besoin d'un n trop grand (n >= 10000)
+    renvoie le message converti
     """
     converted_msg = ""
     converted_msg_tab = []
@@ -128,9 +126,8 @@ def convert_msg(msg):
 
 def encryption_msg(n, pub, msg):
     """
-    encryption_msg:
-        prend en entrée 2 entier (n et pub qui sont la clef publique)
-        et 1 liste d'entier (msg qui contient le message converti en ASCII)
+    prend en entrée 2 entier (n et pub qui sont la clef publique)
+    et 1 tableau d'entier (msg qui contient le message converti en ASCII)
     renvoie le message chiffré(crypted_msg)
     """
     crypted_msg = []
@@ -143,15 +140,14 @@ def encryption_msg(n, pub, msg):
 
 def decryption_msg(n, priv, msg):
     """
-    decryption_msg:
-        prend en entrée 2 entier ( n et priv qui sont la clé privée)
-        et une liste d'entier (msg qui contient le message chiffré)
-        renvoie le message déchiffré, en le passant d'un format ascii à textuel
-        grace a une autre fonction
+    prend en entrée 2 entier ( n et priv qui sont la clé privée)
+    et un tableau d'entier (msg qui contient le message chiffré)
+    renvoie le message déchiffré, en le passant d'un format ascii à textuel
+    grace a une autre fonction
     """
     decrypted_msg_ascii = []
     decrypted_msg = []
-    
+
     if priv < 0:
         priv = -priv
         for i in range(0, len(msg), 1):
@@ -171,10 +167,9 @@ def decryption_msg(n, priv, msg):
 
 def reconvert_msg(decrypted_msg_ascii):
     """
-    reconvert_msg
-        prends en entrée un message déchiffré en ASCII
-        convertit ce message en char
-        renvoie le message en string
+    prend en entrée un message déchiffré en ASCII
+    convertit ce message en char
+    renvoie le message en string
     """
     decrypted_msg_ascii = ''.join(decrypted_msg_ascii)
     decrypted_msg = ""
@@ -188,14 +183,14 @@ def reconvert_msg(decrypted_msg_ascii):
 
     return decrypted_msg
 
-     
-for i in range(0,1000,1):
+
+""" for i in range(0,1000,1):
     n,pub,priv=key_creation()
     while priv < 0 or n < 10000:
-        n,pub,priv=key_creation()
-    """ print(convert_msg("Bonjour les amis, est - ce"))
+        n,pub,priv=key_creation() """
+""" print(convert_msg("Bonjour les amis, est - ce"))
     print(encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce")))
     print(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce")))) """
-    print(n,pub,priv)
+""" print(n,pub,priv)
     msg = reconvert_msg(decryption_msg(n, priv, encryption_msg(n, pub, convert_msg("Bonjour les amis, est - ce"))))
-    print(msg)
+    print(msg) """
