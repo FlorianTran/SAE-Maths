@@ -93,6 +93,9 @@ def key_creation():
     while pgcd(pub, phiN) != 1:
         pub = tabPrim[random.randrange(len(tabPrim))]
     _, priv, _ = extended_gcd(pub, phiN)
+
+    while priv < 0 or n < 1000:
+        n, pub, priv = key_creation()
     return n, pub, priv
 
 # ===== Q 1.4 ===== #
